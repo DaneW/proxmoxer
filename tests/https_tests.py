@@ -13,7 +13,7 @@ def test_https_connection(req_session):
                 'CSRFPreventionToken': 'CSRFPreventionToken'}
     req_session.request.return_value = response
     ProxmoxAPI('proxmox', user='root@pam', password='secret', port=123, verify_ssl=False)
-    call = req_session.return_value.request.call_args[1]
+    call = req_session.return_value.__enter__.return_value.request.call_args[1]
     eq_(call['url'], 'https://proxmox:123/api2/json/access/ticket')
     eq_(call['data'], {'username': 'root@pam', 'password': 'secret'})
     eq_(call['method'], 'post')
